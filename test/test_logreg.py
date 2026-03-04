@@ -23,6 +23,7 @@ def test_prediction():
 	Test cases for prediction function for LogisticRegressor()
 	"""
 	X = np.arange(18).reshape((6,3)) / 18 # create initialized array
+	X_w_bias = np.hstack([X, np.zeros(shape=(X.shape[0],1))])
 	num_feats = X.shape[1]
 	num_samples = X.shape[0]
 	logreg = LogisticRegressor(num_feats=num_feats)
@@ -31,7 +32,7 @@ def test_prediction():
 	assert np.array_equal(y_pred, y_pred.astype(bool)), "Predictions must be binary!"
 	assert len(y_pred) == num_samples, "Predictions must be same length as number of samples"
 	with pytest.rasises(ValueError):
-		logreg.make_prediction(np.hstack([X, np.zeros(shape=(X.shape[0],1))]))
+		logreg.make_prediction(np.hstack([X_w_bias, np.zeros(shape=(X_w_bias.shape[0],1))]))
 
 def test_loss_function():
 	"""
@@ -41,7 +42,12 @@ def test_loss_function():
 	# use simple true and pred arrays
 	y_true_ex = np.array([0,1,0,1,0,0])
 	y_pred_ex = np.array([1,0,0,1,0,1])
-	bce_true = -np.mean(y_true_ex*np.log(y_pred_ex) + (1-y_true_ex)*np.log(1-y_pred_ex))
+
+	# add eps to prevent log erros
+	eps = 1e-8
+	y_true_calc = np.clip(y_true_ex, eps, 1-eps)
+	y_pred_calc = np.clip(y_pred_ex, eps, 1-eps)
+	bce_true = -np.mean(y_true_calc*np.log(y_pred_calc) + (1-y_true_calc)*np.log(1-y_pred_calc))
 	logreg = LogisticRegressor(num_feats=1)
 	bce_logreg = logreg.loss_function(y_true_ex, y_pred_ex)
 	assert bce_true == bce_logreg, "Calculated and LogisticRegressor-returned BCE unequal!"
@@ -66,6 +72,7 @@ def test_gradient():
 	"""
 	y_true_ex = np.array([0,1,0,1,0,0])
 	X_ex = np.arange(18).reshape((6,3)) / 18 # ex normalized array
+	X_ex_w_bias = np.hstack([X_ex, np.zeros(shape=(X.shape[0],1))])
 	num_feats = X_ex.shape[1]
 	logreg = LogisticRegressor(num_feats=num_feats)
 	gradient = logreg.calculate_gradient(y_true_ex, X_ex)
@@ -73,7 +80,7 @@ def test_gradient():
 	# gradient should be same length as weights
 	assert len(gradient) == len(logreg.W), 'The number of gradients calculated must be equal to number of weights'
 	with pytest.rasises(ValueError): # raise error if mismatch in X and W shapes
-		logreg.make_prediction(np.hstack([X_ex, np.zeros(shape=(X_ex.shape[0],1))]))
+		logreg.make_prediction(np.hstack([X_ex_w_bias, np.zeros(shape=(X_ex_w_bias.shape[0],1))]))
 
 def test_training():
 	# load data
