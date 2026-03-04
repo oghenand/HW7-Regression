@@ -21,7 +21,7 @@ def test_prediction():
 	"""
 	Test cases for prediction function for LogisticRegressor()
 	"""
-	X = np.arange(18).rehsape((6,3)) / 18 # create initialized array
+	X = np.arange(18).reshape((6,3)) / 18 # create initialized array
 	num_feats = X.shape[1]
 	num_samples = X.shape[0]
 	logreg = LogisticRegressor(num_feats=num_feats)
@@ -67,7 +67,7 @@ def test_gradient():
 	Uses simple arrays to test edge cases and expected results.
 	"""
 	y_true_ex = np.array([0,1,0,1,0,0])
-	X_ex = np.arange(18).rehsape((6,3)) / 18 # ex normalized array
+	X_ex = np.arange(18).reshape((6,3)) / 18 # ex normalized array
 	num_feats = X_ex.shape[1]
 	logreg = LogisticRegressor(num_feats=num_feats)
 	gradient = logreg.calculate_gradient(y_true_ex, X_ex)

@@ -6,7 +6,7 @@ requires = [
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "hmm"
+name = "regression"
 authors = [{name = "Shu Zhang", email = "shu.zhang2@ucsf.edu"}]
 readme = "README.md"
 license = {file = "LICENSE"}
