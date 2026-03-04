@@ -27,7 +27,7 @@ def test_prediction():
 	num_feats = X.shape[1]
 	num_samples = X.shape[0]
 	logreg = LogisticRegressor(num_feats=num_feats)
-	y_pred = logreg.make_prediction(X)
+	y_pred = logreg.make_prediction(X_w_bias)
 
 	assert np.array_equal(y_pred, y_pred.astype(bool)), "Predictions must be binary!"
 	assert len(y_pred) == num_samples, "Predictions must be same length as number of samples"
@@ -72,10 +72,11 @@ def test_gradient():
 	"""
 	y_true_ex = np.array([0,1,0,1,0,0])
 	X_ex = np.arange(18).reshape((6,3)) / 18 # ex normalized array
-	X_ex_w_bias = np.hstack([X_ex, np.zeros(shape=(X.shape[0],1))])
+	# add bias term
+	X_ex_w_bias = np.hstack([X_ex, np.zeros(shape=(X_ex.shape[0],1))])
 	num_feats = X_ex.shape[1]
 	logreg = LogisticRegressor(num_feats=num_feats)
-	gradient = logreg.calculate_gradient(y_true_ex, X_ex)
+	gradient = logreg.calculate_gradient(y_true_ex, X_ex_w_bias)
 	
 	# gradient should be same length as weights
 	assert len(gradient) == len(logreg.W), 'The number of gradients calculated must be equal to number of weights'
