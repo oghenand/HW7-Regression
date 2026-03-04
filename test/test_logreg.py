@@ -11,7 +11,8 @@ This is not an exhaustive list.
 # Imports
 import pytest
 import numpy as np
-from regression import (logreg, utils)
+from regression.logreg import LogisticRegressor, BaseRegressor
+from regression.utils import loadDataset
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
