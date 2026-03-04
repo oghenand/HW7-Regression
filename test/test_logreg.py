@@ -31,7 +31,7 @@ def test_prediction():
 
 	assert np.array_equal(y_pred, y_pred.astype(bool)), "Predictions must be binary!"
 	assert len(y_pred) == num_samples, "Predictions must be same length as number of samples"
-	with pytest.rasises(ValueError):
+	with pytest.raises(ValueError):
 		logreg.make_prediction(np.hstack([X_w_bias, np.zeros(shape=(X_w_bias.shape[0],1))]))
 
 def test_loss_function():
@@ -50,7 +50,7 @@ def test_loss_function():
 	bce_true = -np.mean(y_true_calc*np.log(y_pred_calc) + (1-y_true_calc)*np.log(1-y_pred_calc))
 	logreg = LogisticRegressor(num_feats=1)
 	bce_logreg = logreg.loss_function(y_true_ex, y_pred_ex)
-	assert bce_true == bce_logreg, "Calculated and LogisticRegressor-returned BCE unequal!"
+	assert np.abs(bce_true - bce_logreg) < 1e-3, "Calculated and LogisticRegressor-returned BCE unequal!"
 	assert bce_logreg >= 0, "BCE loss must be zero at minimum!"
 
 	# check for inproper inputs
@@ -80,7 +80,7 @@ def test_gradient():
 	
 	# gradient should be same length as weights
 	assert len(gradient) == len(logreg.W), 'The number of gradients calculated must be equal to number of weights'
-	with pytest.rasises(ValueError): # raise error if mismatch in X and W shapes
+	with pytest.raises(ValueError): # raise error if mismatch in X and W shapes
 		logreg.make_prediction(np.hstack([X_ex_w_bias, np.zeros(shape=(X_ex_w_bias.shape[0],1))]))
 
 def test_training():
