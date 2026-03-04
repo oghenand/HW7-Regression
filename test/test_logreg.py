@@ -101,6 +101,6 @@ def test_training():
 	logreg.train_model(X_train, y_train, X_val, y_val)
 	final_W = logreg.W
 
-	# final and initial weights should be different (very highly unlikely that random weights are perfect fit)
+	# final and initial weights should be different (very highly unlikely that random weights are perfect)
 	assert np.any(final_W-initial_W != 0), "Initial and Final Weights the same, model did not learn!"
 	assert logreg.loss_hist_train[-1] <= logreg.loss_hist_train[0], "Loss should not increase after training!"
