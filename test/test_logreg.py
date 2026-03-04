@@ -41,9 +41,6 @@ def test_loss_function():
 	# use simple true and pred arrays
 	y_true_ex = np.array([0,1,0,1,0,0])
 	y_pred_ex = np.array([1,0,0,1,0,1])
-	# add eps to avoig log errors
-	eps = 1e-8
-	y_pred_ex = np.clip(y_pred_ex, eps, 1-eps)
 	bce_true = -np.mean(y_true_ex*np.log(y_pred_ex) + (1-y_true_ex)*np.log(1-y_pred_ex))
 	logreg = LogisticRegressor(num_feats=1)
 	bce_logreg = logreg.loss_function(y_true_ex, y_pred_ex)

@@ -141,7 +141,7 @@ class LogisticRegressor(BaseRegressor):
         Returns: 
             The predicted labels (y_pred) for given X.
         """
-        if X.shape[1] != self.W.shape[0]:
+        if self.num_feats+1 != self.W.shape[0]:
             raise ValueError('Number of Features in X must be same as number of weights')
         # first calculate sigmoid probabilites (apply sigmoid func to weighted features)
         sigmoid_probabilities = self._sigmoid(np.dot(X, self.W))
@@ -177,6 +177,7 @@ class LogisticRegressor(BaseRegressor):
         if not len(y_true) == len(y_pred):
             raise ValueError('Prediction and true arrays must be same length')
 
+        # add eps to avoid log errors
         eps = 1e-8
         y_pred = np.clip(y_pred, eps, 1-eps)
         BCE_loss = -np.mean(y_true*np.log(y_pred) + (1-y_true)*np.log(1-y_pred))
@@ -195,7 +196,7 @@ class LogisticRegressor(BaseRegressor):
             Vector of gradients.
         """
         n = X.shape[0] # number of samples
-        if X.shape[1] != len(self.W):
+        if self.num_feats+1 != len(self.W):
             raise ValueError('X and W must have same shape.')
         # first get probabilities
         sigmoid_probabilities = self._sigmoid(np.dot(X,self.W))
