@@ -2,6 +2,9 @@
 
 In this assignment, you'll implement a classifier using logistic regression, optimized with gradient descent.
 
+# Github Badge
+[![regression_hw7](https://github.com/oghenand/HW7-Regression/actions/workflows/test.yml/badge.svg)](https://github.com/oghenand/HW7-Regression/actions/workflows/test.yml)
+
 ## Overview
 
 In class, we went over an implementation of linear regression using gradient descent. For this homework, you will be implementing a logistic regression model using the same framework. Logistic regression is useful for binary classification because the [sigmoid function](https://en.wikipedia.org/wiki/Sigmoid_function) outputs a value between 0 and 1.
